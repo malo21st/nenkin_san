@@ -15,8 +15,8 @@ PAGE_LIST = [f"page_{page:03d}" for page in range(1, 38)]
 INTRO = "この文章を３０字程度で要約して下さい。　回答後は、必ず'改行'して「ご質問をどうぞ。」を付けて下さい。"
 
 if "qa" not in st.session_state:
-#     st.session_state.qa = {"pdf": "", "history": []}
-    st.session_state["qa"] = {"pdf": "", "history": [{"role": "Q", "msg": INTRO}]}
+    st.session_state.qa = {"pdf": "", "history": []}
+#     st.session_state["qa"] = {"pdf": "", "history": [{"role": "Q", "msg": INTRO}]}
 
 if "prev_q" not in st.session_state:
     st.session_state.prev_q = ""
