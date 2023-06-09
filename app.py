@@ -27,7 +27,7 @@ QA_PROMPT_TMPL = (
 QA_PROMPT = QuestionAnswerPrompt(QA_PROMPT_TMPL)
 
 @st.cache_resource
-def load_vector_db(uploaded_file):
+def load_vector_db():
     storage_context = StorageContext.from_defaults(persist_dir="./storage/")
     index = load_index_from_storage(storage_context)
     return index
@@ -53,7 +53,7 @@ if st.session_state.qa["history"]:
 chat_box = st.empty() # Streaming message
 
 # Model (Business Logic)
-index = load_vector_db(uploaded_file)
+index = load_vector_db()
 engine = index.as_query_engine(text_qa_template=QA_PROMPT, streaming=True, similarity_top_k=1)
 if st.session_state.qa["history"]:
     query = st.session_state.qa["history"][-1]["msg"]
