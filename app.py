@@ -95,18 +95,18 @@ with tab_doc:
     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
     with col_prev:
         st.button("＜ 前ページ")
-        if st.button:
+        if st.button and st.session_state.page > 2:
             st.session_state.page -= st.session_state.page
     with col_next:
         st.button("次ページ ＞")
-        if st.button:
+        if st.button and st.session_state.page < 37:
             st.session_state.page += st.session_state.page
     with col_l:
         pass
     with col_r:
         pass
-    image = Image.open(f"./pdf_png/{PAGE_DIC[st.session_state.page]}")
-    st.image(image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
+    pdf_img = Image.open(f"./pdf_png/{PAGE_DIC[st.session_state.page]}")
+    st.image(pdf_img, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
     
 # st.session_state.qa
 st.session_state.page
