@@ -13,7 +13,7 @@ os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
 tab_qa, tab_doc = st.tabs(["Ｑ＆Ａ", "文書"])
 
-PAGE_LIST = [f"page_{page:03d}" for page in range(1, 38)]
+PAGE_DIC = {page: f"page_{page:03d}.png" for page in range(1, 38)}
 INTRO = "左側のテキストボックスに質問を入力し、エンターキーを押すとＡＩが回答します。"
 # INTRO = "この文章を３０字程度で要約して下さい。　回答後は、必ず'改行'して「ご質問をどうぞ。」を付けて下さい。"
 
@@ -22,7 +22,7 @@ if "qa" not in st.session_state:
     st.session_state["qa"] = {"history": [{"role": "A", "msg": INTRO}]}
 
 if "page" not in st.session_state:
-    st.session_state.page = "page_001"
+    st.session_state.page = 1
 
 # Prompt
 QA_PROMPT_TMPL = (
@@ -82,26 +82,30 @@ with tab_qa:
             refer_pages = "\n\n参照：" + ", ".join([f"{node.extra_info['page_label']}ページ" for node in response.source_nodes])
             chat_box.write(text + refer_pages)
             st.session_state.qa["history"].append({"role": "A", "msg": text + refer_pages})
-            st.session_state.page = PAGE_LIST[int(response.source_nodes[0].extra_info['page_label']) - 1]
+            st.session_state.page = int(response.source_nodes[0].extra_info['page_label'])
         except Exception as error_msg:
     #             error_msg = "エラーが発生しました！　もう一度、質問して下さい。"
             st.error(error_msg)
             st.session_state.qa["history"].append({"role": "E", "msg": error_msg})
 
-    image = Image.open(f"./pdf_png/{st.session_state.page}.png")
+    image = Image.open(f"./pdf_png/{PAGE_DIC[st.session_state.page]}")
     st.sidebar.image(image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
 
 with tab_doc:
     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
     with col_prev:
         st.button("＜ 前ページ")
+        if st.button:
+            st.session_state.page -= st.session_state.page
     with col_next:
         st.button("次ページ ＞")
+        if st.button:
+            st.session_state.page += st.session_state.page
     with col_l:
         pass
     with col_r:
         pass
-    image = Image.open(f"./pdf_png/{st.session_state.page}.png")
+    image = Image.open(f"./pdf_png/{PAGE_DIC[st.session_state.page]}")
     st.image(image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
     
 # st.session_state.qa
