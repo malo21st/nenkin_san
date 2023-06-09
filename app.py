@@ -95,7 +95,7 @@ with tab_doc:
     col_prev, col_next = st.columns(2)
     with col_prev:
         st.button("＜ 前ページ")
-    with col_prev:
+    with col_next:
         st.button("次ページ ＞")
     image = Image.open(f"./pdf_png/{st.session_state.page}.png")
     st.image(image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
