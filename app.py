@@ -42,8 +42,8 @@ QA_PROMPT = QuestionAnswerPrompt(QA_PROMPT_TMPL)
 
 @st.cache_resource
 def load_vector_db():
-#     llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-3.5-turbo", streaming=True))
-    llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-4", streaming=True))
+    llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-3.5-turbo", streaming=True))
+#     llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-4", streaming=True))
     service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor)
     storage_context = StorageContext.from_defaults(persist_dir="./storage/")
     index = load_index_from_storage(storage_context, service_context=service_context)
@@ -67,8 +67,10 @@ st.sidebar.title("補助金さん")
 st.sidebar.write("補助金・助成金についてお任せあれ")
 user_input = st.sidebar.text_input("ご質問をどうぞ", key="user_input", on_change=store_del_msg)
 # st.sidebar.markdown("---")
-if st.sidebar.button("この補助金・助成金の概要"):
-    st.session_state.qa["history"].append({"role": "Q", "msg": "この助成金の概要を教えて下さい。"})
+if st.sidebar.button("助成対象の事業"):
+    st.session_state.qa["history"].append({"role": "Q", "msg": "助成対象の事業を教えて下さい。"})
+if st.sidebar.button("申請手順（表形式）"):
+    st.session_state.qa["history"].append({"role": "Q", "msg": "申請手順を表にして下さい。"})
 st.sidebar.image(get_pdf_image(1), caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
 
 # st.sidebar.markdown("---")
