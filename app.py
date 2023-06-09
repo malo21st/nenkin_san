@@ -90,5 +90,6 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
 image = Image.open(f"./pdf_png/{st.session_state.page}.png")
 st.sidebar.image(image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
         
-st.session_state.qa
+# st.session_state.qa
+page
 st.session_state.page
