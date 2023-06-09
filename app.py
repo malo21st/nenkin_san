@@ -91,9 +91,10 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
         st.error(error_msg)
         st.session_state.qa["history"].append({"role": "E", "msg": error_msg})
 
+page = st.session_state.pdf_page
 with st.container():
     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
-    page = st.session_state.pdf_page
+    
     with col_prev:
         if page == 0:
             st.button("＜ 前ページ", disabled=True)
