@@ -54,45 +54,46 @@ def store_del_msg():
 st.sidebar.title("補助金さん")
 st.sidebar.write("補助金・助成金についてお任せあれ")
 user_input = st.sidebar.text_input("ご質問をどうぞ", key="user_input", on_change=store_del_msg)
-
+tab1, tab2 = st.sidebar.tabs(["Q&A", "Doc"])
 # st.sidebar.markdown("---")
-## Main Content
-# if st.session_state.qa["history"]:
-for message in st.session_state.qa["history"]:
-#     for message in st.session_state.qa["history"][1:]:
-    if message["role"] == "Q": # Q: Question (User)
-        st.info(message["msg"])
-    elif message["role"] == "A": # A: Answer (AI Assistant)
-        st.write(message["msg"])
-    elif message["role"] == "E": # E: Error
-        st.error(message["msg"])
-chat_box = st.empty() # Streaming message
-
-# Model (Business Logic)
-index = load_vector_db()
-engine = index.as_query_engine(text_qa_template=QA_PROMPT, streaming=True, similarity_top_k=1)
-
-if st.session_state.qa["history"][-1]["role"] == "Q":
-    query = st.session_state.qa["history"][-1]["msg"]
-    try:
-        response = engine.query(query) # Query to ChatGPT
-        text = ""
-        for next in response.response_gen:
-            text += next
-            chat_box.write(text)
-        refer_pages = "\n\n参照：" + ", ".join([f"{node.extra_info['page_label']}ページ" for node in response.source_nodes])
-        chat_box.write(text + refer_pages)
-        st.session_state.qa["history"].append({"role": "A", "msg": text + refer_pages})
-        st.session_state.pdf_page = int(response.source_nodes[0].extra_info['page_label'])
-    except Exception as error_msg:
-#             error_msg = "エラーが発生しました！　もう一度、質問して下さい。"
-        st.error(error_msg)
-        st.session_state.qa["history"].append({"role": "E", "msg": error_msg})
-
-st.sidebar.markdown("---")
 st.sidebar.image(get_pdf_image(1), caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
 
-with st.form("pdf"):
+# st.sidebar.markdown("---")
+with tab1:
+    ## Main Content
+    # if st.session_state.qa["history"]:
+    for message in st.session_state.qa["history"]:
+    #     for message in st.session_state.qa["history"][1:]:
+        if message["role"] == "Q": # Q: Question (User)
+            st.info(message["msg"])
+        elif message["role"] == "A": # A: Answer (AI Assistant)
+            st.write(message["msg"])
+        elif message["role"] == "E": # E: Error
+            st.error(message["msg"])
+    chat_box = st.empty() # Streaming message
+
+    # Model (Business Logic)
+    index = load_vector_db()
+    engine = index.as_query_engine(text_qa_template=QA_PROMPT, streaming=True, similarity_top_k=1)
+
+    if st.session_state.qa["history"][-1]["role"] == "Q":
+        query = st.session_state.qa["history"][-1]["msg"]
+        try:
+            response = engine.query(query) # Query to ChatGPT
+            text = ""
+            for next in response.response_gen:
+                text += next
+                chat_box.write(text)
+            refer_pages = "\n\n参照：" + ", ".join([f"{node.extra_info['page_label']}ページ" for node in response.source_nodes])
+            chat_box.write(text + refer_pages)
+            st.session_state.qa["history"].append({"role": "A", "msg": text + refer_pages})
+            st.session_state.pdf_page = int(response.source_nodes[0].extra_info['page_label'])
+        except Exception as error_msg:
+    #             error_msg = "エラーが発生しました！　もう一度、質問して下さい。"
+            st.error(error_msg)
+            st.session_state.qa["history"].append({"role": "E", "msg": error_msg})
+
+with tab2:
     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
     with col_prev:
         if st.button and st.session_state.pdf_page == 0:
