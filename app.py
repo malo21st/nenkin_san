@@ -89,5 +89,4 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
         st.session_state.qa["history"].append({"role": "E", "msg": error_msg})
          
 # st.session_state.qa
-page
 st.session_state.page
