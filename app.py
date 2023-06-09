@@ -45,7 +45,7 @@ def get_pdf_image(page):
     return Image.open(f"./pdf_png/{PAGE_DIC[page]}")
 
 def show_pdf(page):
-    pdf_img = get_pdf_image(page)
+    pdf_image = get_pdf_image(page)
     st.image(pdf_image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
     st.session_state.pdf_page = page
 
