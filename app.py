@@ -24,6 +24,9 @@ if "qa" not in st.session_state:
 if "page" not in st.session_state:
     st.session_state.page = 1
 
+if "pdf_page" not in st.session_state:
+    st.session_state.pdf_page = 1
+
 # Prompt
 QA_PROMPT_TMPL = (
     "下記の情報が与えられています。 \n"
@@ -49,7 +52,6 @@ def store_del_msg():
 
 # View (User Interface)
 with tab_qa:
-    st.session_state.page
     ## Sidebar
     st.sidebar.title("補助金さん")
     st.sidebar.write("補助金・助成金についてお任せあれ")
@@ -84,6 +86,7 @@ with tab_qa:
             chat_box.write(text + refer_pages)
             st.session_state.qa["history"].append({"role": "A", "msg": text + refer_pages})
             st.session_state.page = int(response.source_nodes[0].extra_info['page_label'])
+            st.session_state.pdf_page = int(response.source_nodes[0].extra_info['page_label'])
         except Exception as error_msg:
     #             error_msg = "エラーが発生しました！　もう一度、質問して下さい。"
             st.error(error_msg)
@@ -95,22 +98,22 @@ with tab_qa:
 with tab_doc:
     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
     with col_prev:
-        if st.button and st.session_state.page == 1:
+        if st.button and st.session_state.pdf_page == 1:
             st.button("＜ 前ページ", disabled=True)
         else:
             if st.button("＜ 前ページ"):
-                st.session_state.page -= st.session_state.page
+                st.session_state.pdf_page -= 1
     with col_next:
-        if st.button and st.session_state.page == 37:
+        if st.button and st.session_state.pdf_page == 37:
             st.button("次ページ ＞", disabled=True)
         else:
             if st.button("次ページ ＞"):
-                st.session_state.page += st.session_state.page
+                st.session_state.pdf_page += 1
     with col_l:
         pass
     with col_r:
         pass
-    pdf_img = Image.open(f"./pdf_png/{PAGE_DIC[st.session_state.page]}")
+    pdf_img = Image.open(f"./pdf_png/{PAGE_DIC[st.session_state.pdf_page]}")
     st.image(pdf_img, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
     
 # st.session_state.qa
