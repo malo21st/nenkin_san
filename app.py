@@ -7,20 +7,20 @@ from llama_index import StorageContext, load_index_from_storage
 from langchain import OpenAI
 from PIL import Image
 import os
-import base64
+# import base64
 
-def show_pdf(file_path):
-    with open(file_path,"rb") as f:
-        base64_pdf = base64.b64encode(f.read()).decode()
-    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="600" height="800" type="application/pdf"></iframe>'
-    st.markdown(pdf_display, unsafe_allow_html=True)
+# def show_pdf(file_path):
+#     with open(file_path,"rb") as f:
+#         base64_pdf = base64.b64encode(f.read()).decode()
+#     pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="600" height="800" type="application/pdf"></iframe>'
+#     st.markdown(pdf_display, unsafe_allow_html=True)
 
-show_pdf('./pdf-pages/R5_tenjikaijyosei_boshuyoko_230403-1.pdf')
+# show_pdf('./pdf-pages/R5_tenjikaijyosei_boshuyoko_230403-1.pdf')
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
 PAGE_DIC = {page: f"page_{page:03d}.png" for page in range(1, 38)}
-INTRO = "左側のテキストボックスに質問を入力し、エンターキーを押すとＡＩが回答します。"
+INTRO = "左側のテキストボックスに質問を入力しエンターキーを押すと、ＡＩが回答します。"
 # INTRO = "この文章を３０字程度で要約して下さい。　回答後は、必ず'改行'して「ご質問をどうぞ。」を付けて下さい。"
 
 if "qa" not in st.session_state:
@@ -103,25 +103,25 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
         st.error(error_msg)
         st.session_state.qa["history"].append({"role": "E", "msg": error_msg})
 
-with pdf_page:
-    with st.expander("参照ページを開く"):
-        page = st.session_state.pdf_page
-    #     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
-    #     with col_prev:
-    #         if page == 1:
-    #             st.button("＜ 前ページ", on_click=show_pdf, args=([page]), disabled=True)
-    #         elif page > 1:
-    #             st.button("＜ 前ページ", on_click=show_pdf, args=([page-1]))
-    #     with col_next:
-    #         if page == 37:
-    #             st.button("次ページ ＞", on_click=show_pdf, args=([page]), disabled=True)
-    #         elif page < 37:
-    #             st.button("次ページ ＞", on_click=show_pdf, args=([page+1]))
-    #     with col_l: pass
-    #     with col_r: pass
-        pdf_image = get_pdf_image(st.session_state.pdf_page)
-        st.write(page, st.session_state.pdf_page )
-        st.image(pdf_image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
+    with pdf_page:
+        with st.expander("参照ページを開く"):
+            page = st.session_state.pdf_page
+        #     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
+        #     with col_prev:
+        #         if page == 1:
+        #             st.button("＜ 前ページ", on_click=show_pdf, args=([page]), disabled=True)
+        #         elif page > 1:
+        #             st.button("＜ 前ページ", on_click=show_pdf, args=([page-1]))
+        #     with col_next:
+        #         if page == 37:
+        #             st.button("次ページ ＞", on_click=show_pdf, args=([page]), disabled=True)
+        #         elif page < 37:
+        #             st.button("次ページ ＞", on_click=show_pdf, args=([page+1]))
+        #     with col_l: pass
+        #     with col_r: pass
+            pdf_image = get_pdf_image(st.session_state.pdf_page)
+            st.write(page, st.session_state.pdf_page )
+            st.image(pdf_image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
 
 # st.session_state.qa
 # st.session_state.pdf_page
