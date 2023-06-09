@@ -72,7 +72,7 @@ for message in st.session_state.qa["history"]:
     elif message["role"] == "E": # E: Error
         st.error(message["msg"])
 chat_box = st.empty() # Streaming message
-pdf_page = st.empty()
+pdf_page = st.container()
 
 # Model (Business Logic)
 index = load_vector_db()
@@ -95,7 +95,7 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
         st.error(error_msg)
         st.session_state.qa["history"].append({"role": "E", "msg": error_msg})
 
-with st.container():
+with pdf_page:
     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
     page = st.session_state.pdf_page
     with col_prev:
@@ -112,7 +112,7 @@ with st.container():
     with col_r: pass
     pdf_image = get_pdf_image(st.session_state.pdf_page)
     st.write(page, st.session_state.pdf_page )
-    pdf_page.image(pdf_image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
+    st.image(pdf_image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
 
 # st.session_state.qa
 # st.session_state.pdf_page
