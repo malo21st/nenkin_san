@@ -11,7 +11,7 @@ import os
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
-PAGE_DIC = {page: f"page_{page+1:03d}.png" for page in range(0, 37)}
+PAGE_DIC = {page: f"page_{page:03d}.png" for page in range(1, 38)}
 INTRO = "左側のテキストボックスに質問を入力し、エンターキーを押すとＡＩが回答します。"
 # INTRO = "この文章を３０字程度で要約して下さい。　回答後は、必ず'改行'して「ご質問をどうぞ。」を付けて下さい。"
 
@@ -20,7 +20,7 @@ if "qa" not in st.session_state:
     st.session_state["qa"] = {"history": [{"role": "A", "msg": INTRO}]}
 
 if "pdf_page" not in st.session_state:
-    st.session_state.pdf_page = 0
+    st.session_state.pdf_page = 1
 
 # Prompt
 QA_PROMPT_TMPL = (
@@ -98,9 +98,9 @@ with st.container():
     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
     page = st.session_state.pdf_page
     with col_prev:
-        if page == 0:
+        if page == 1:
             st.button("＜ 前ページ", on_click=show_pdf, args=([page]), disabled=True)
-        elif page > 0:
+        elif page > 1:
             st.button("＜ 前ページ", on_click=show_pdf, args=([page-1]))
     with col_next:
         if page == 37:
