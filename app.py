@@ -5,27 +5,19 @@ from llama_index import LLMPredictor, GPTVectorStoreIndex, PromptHelper, Service
 from llama_index import QuestionAnswerPrompt, GPTVectorStoreIndex, SimpleDirectoryReader
 from llama_index import StorageContext, load_index_from_storage
 from langchain import OpenAI
-# from tempfile import NamedTemporaryFile
 from PIL import Image
 import os
 
 import base64
 from pathlib import Path
+import streamlit.components.v1 as components
 
 pdf_path = Path("R5_tenjikaijyosei_boshuyoko_230403.pdf")
 base64_pdf = base64.b64encode(pdf_path.read_bytes()).decode("utf-8")
 pdf_display = f"""
     <iframe src="data:application/pdf;base64,{base64_pdf}" width="800px" height="2100px" type="application/pdf"></iframe>
 """
-st.markdown(pdf_display, unsafe_allow_html=True)
-
-
-# import streamlit.components.v1 as components
-# from streamlit_javascript import st_javascript
-
-# url = st_javascript("await fetch('').then(r => window.parent.location.href)")
-# st.write(url[:-4])
-# st.write(Path(""))
+components.html(pdf_display)
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
