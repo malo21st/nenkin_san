@@ -10,11 +10,15 @@ import os
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
+PAGE_LIST = [f"page_{page:03d}" for page in range(1, 38)]
 INTRO = "この文章を３０字程度で要約して下さい。　回答後は、必ず'改行'して「ご質問をどうぞ。」を付けて下さい。"
 
 if "qa" not in st.session_state:
     st.session_state.qa = {"pdf": "", "history": []}
 #     st.session_state["qa"] = {"pdf": "", "history": [{"role": "Q", "msg": INTRO}]}
+
+if "page" not in st.session_state:
+    st.session_state.page = "page_001"
 
 # Prompt
 QA_PROMPT_TMPL = (
@@ -40,8 +44,14 @@ def store_del_msg():
 
 # View (User Interface)
 ## Sidebar
-st.sidebar.title("年金さん")
+st.sidebar.title("補助金さん")
+st.sidebar.write("補助金・助成金についてお任せあれ")
 user_input = st.sidebar.text_input("ご質問をどうぞ", key="user_input", on_change=store_del_msg)
+st.sidebar.markdown("---")
+page = st.sidebar.selectbox("ページ", PAGE_LIST, index=PAGE_LIST.index(st.session_state.page))
+image = Image.open(f"./pdf_png/{page}.png")
+st.sidebar.image(image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
+st.session_state.page = page
 ## Main Content
 if st.session_state.qa["history"]:
     for message in st.session_state.qa["history"]:
