@@ -55,21 +55,21 @@ st.sidebar.write("補助金・助成金についてお任せあれ")
 user_input = st.sidebar.text_input("ご質問をどうぞ", key="user_input", on_change=store_del_msg)
 # st.sidebar.markdown("---")
 ## Main Content
-if st.session_state.prev_q != user_input:
-    for message in st.session_state.qa["history"]:
+# if st.session_state.qa["history"]:
+for message in st.session_state.qa["history"]:
 #     for message in st.session_state.qa["history"][1:]:
-        if message["role"] == "Q": # Q: Question (User)
-            st.info(message["msg"])
-        elif message["role"] == "A": # A: Answer (AI Assistant)
-            st.write(message["msg"])
-        elif message["role"] == "E": # E: Error
-            st.error(message["msg"])
+    if message["role"] == "Q": # Q: Question (User)
+        st.info(message["msg"])
+    elif message["role"] == "A": # A: Answer (AI Assistant)
+        st.write(message["msg"])
+    elif message["role"] == "E": # E: Error
+        st.error(message["msg"])
 chat_box = st.empty() # Streaming message
 
 # Model (Business Logic)
 index = load_vector_db()
 engine = index.as_query_engine(text_qa_template=QA_PROMPT, streaming=True, similarity_top_k=1)
-if st.session_state.qa["history"]:
+if st.session_state.prev_q != user_input:
     query = st.session_state.qa["history"][-1]["msg"]
     try:
         response = engine.query(query) # Query to ChatGPT
