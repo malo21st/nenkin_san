@@ -8,6 +8,13 @@ from langchain import OpenAI
 # from tempfile import NamedTemporaryFile
 from PIL import Image
 import os
+import urlib.parse
+
+sessions = st.runtime.get_instance()._session_mgr.list_active_sessions()
+req = st.runtime.get_instance()._session_mgr.get_active_session_info(sessions[0]).request
+joinme = (req.protocol, req.host, "", "", "", "")
+my_url = urllib.parse.urlunparse(joinme)
+st.write(my_url)
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
