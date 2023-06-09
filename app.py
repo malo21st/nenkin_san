@@ -94,13 +94,13 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
 with st.container():
     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
     with col_prev:
-        if st.button and st.session_state.pdf_page == 0:
+        if st.session_state.pdf_page == 0:
             st.button("＜ 前ページ", disabled=True)
         else:
             if st.button("＜ 前ページ"):
                 st.session_state.pdf_page -= 1
     with col_next:
-        if st.button and st.session_state.pdf_page == 37:
+        if st.session_state.pdf_page == 37:
             st.button("次ページ ＞", disabled=True)
         else:
             if st.button("次ページ ＞"):
