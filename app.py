@@ -67,8 +67,10 @@ st.sidebar.title("補助金さん")
 st.sidebar.write("補助金・助成金についてお任せあれ")
 user_input = st.sidebar.text_input("ご質問をどうぞ", key="user_input", on_change=store_del_msg)
 # st.sidebar.markdown("---")
-if st.sidebar.button("助成対象の事業"):
-    st.session_state.qa["history"].append({"role": "Q", "msg": "助成対象の事業を教えて下さい。"})
+if st.sidebar.button("助成事業の目的"):
+    st.session_state.qa["history"].append({"role": "Q", "msg": "助成事業の目的を教えて下さい。"})
+if st.sidebar.button("助成対象の経費"):
+    st.session_state.qa["history"].append({"role": "Q", "msg": "助成対象の経費を教えて下さい。"})
 if st.sidebar.button("申請手順（表形式）"):
     st.session_state.qa["history"].append({"role": "Q", "msg": "申請手順を表にして下さい。"})
 st.sidebar.image(get_pdf_image(1), caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
