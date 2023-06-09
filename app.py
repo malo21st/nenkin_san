@@ -104,12 +104,12 @@ with st.container():
         if page == 0:
             st.button("＜ 前ページ", disabled=True)
         elif page > 0:
-            st.button("＜ 前ページ", on_click=show_pdf(), args=([page-1]))
+            st.button("＜ 前ページ", on_click=show_pdf, args=([page-1]))
     with col_next:
         if page == 37:
             st.button("次ページ ＞", disabled=True)
         elif page < 37:
-            st.button("＜ 前ページ", on_click=show_pdf(), args=([page+1]))
+            st.button("次ページ ＞", on_click=show_pdf, args=([page+1]))
     with col_l: pass
     with col_r: pass
     
