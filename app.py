@@ -44,6 +44,11 @@ def load_vector_db():
 def get_pdf_image(page):
     return Image.open(f"./pdf_png/{PAGE_DIC[page]}")
 
+def show_pdf(page):
+    pdf_img = get_pdf_image(page)
+    st.image(pdf_image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
+    st.session_state.pdf_page = page
+
 def store_del_msg():
     if st.session_state.user_input and st.session_state.qa["history"][-1]["role"] != "Q": # st.session_state.prev_q != st.session_state.user_input:
         st.session_state.qa["history"].append({"role": "Q", "msg": st.session_state.user_input}) # store
@@ -99,21 +104,14 @@ with st.container():
         if page == 0:
             st.button("＜ 前ページ", disabled=True)
         elif page > 0:
-            if st.button("＜ 前ページ"):
-                page -= 1
+            st.button("＜ 前ページ", on_click=show_pdf(), args=([page-1])
     with col_next:
         if page == 37:
             st.button("次ページ ＞", disabled=True)
-        else:
-            if st.button("次ページ ＞"):
-                page += 1
-    with col_l:
-        pass
-    with col_r:
-        pass
-    pdf_img = get_pdf_image(page)
-    st.image(pdf_img, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
-    st.session_state.pdf_page = page
+        elif page < 37:
+            st.button("＜ 前ページ", on_click=show_pdf(), args=([page+1])
+    with col_l: pass
+    with col_r: pass
     
 # st.session_state.qa
 # st.session_state.pdf_page
