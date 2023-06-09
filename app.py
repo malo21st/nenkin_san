@@ -75,7 +75,7 @@ if st.session_state.qa["history"]:
         refer_pages = "\n\n参照：" + ", ".join([f"{node.extra_info['page_label']}ページ" for node in response.source_nodes])
         chat_box.write(text + refer_pages)
         st.session_state.qa["history"].append({"role": "A", "msg": text + refer_pages})
-        st.session_state.page = PAGE_LIST[response.source_nodes[0].extra_info['page_label'] - 1]
+        st.session_state.page = PAGE_LIST[int(response.source_nodes[0].extra_info['page_label']) - 1]
     except Exception as error_msg:
 #             error_msg = "エラーが発生しました！　もう一度、質問して下さい。"
         st.error(error_msg)
