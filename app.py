@@ -49,6 +49,7 @@ def store_del_msg():
 
 # View (User Interface)
 with tab_qa:
+    st.session_state.page
     ## Sidebar
     st.sidebar.title("補助金さん")
     st.sidebar.write("補助金・助成金についてお任せあれ")
@@ -92,6 +93,7 @@ with tab_qa:
     st.sidebar.image(image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
 
 with tab_doc:
+    st.session_state.page
     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
     with col_prev:
         if st.button and st.session_state.page == 1:
