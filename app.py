@@ -12,11 +12,12 @@ import os
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
 PAGE_LIST = [f"page_{page:03d}" for page in range(1, 38)]
-INTRO = "この文章を３０字程度で要約して下さい。　回答後は、必ず'改行'して「ご質問をどうぞ。」を付けて下さい。"
+INTRO = "左側のテキストボックスに質問を入力し、エンターキーを押すとＡＩが回答します。"
+# INTRO = "この文章を３０字程度で要約して下さい。　回答後は、必ず'改行'して「ご質問をどうぞ。」を付けて下さい。"
 
 if "qa" not in st.session_state:
-    st.session_state.qa = {"pdf": "", "history": []}
-#     st.session_state["qa"] = {"pdf": "", "history": [{"role": "Q", "msg": INTRO}]}
+#     st.session_state.qa = {"pdf": "", "history": []}
+    st.session_state["qa"] = {"pdf": "", "history": [{"role": "Q", "msg": INTRO}]}
 
 if "prev_q" not in st.session_state:
     st.session_state.prev_q = ""
@@ -43,7 +44,7 @@ def load_vector_db():
     return index
 
 def store_del_msg():
-    if st.session_state.user_input and st.session_state.prev_q != st.session_state.user_input:
+    if st.session_state.user_input and st.session_state.qa["history"][-1]["role"] != "A": # st.session_state.prev_q != st.session_state.user_input:
         st.session_state.qa["history"].append({"role": "Q", "msg": st.session_state.user_input}) # store
         st.session_state.prev_q = st.session_state.user_input
     st.session_state.user_input = ""  # del
@@ -71,7 +72,7 @@ chat_box = st.empty() # Streaming message
 # Model (Business Logic)
 index = load_vector_db()
 engine = index.as_query_engine(text_qa_template=QA_PROMPT, streaming=True, similarity_top_k=1)
-if st.session_state.prev_q != st.session_state.user_input:
+if st.session_state.user_input and st.session_state.qa["history"][-1]["role"] != "A"::
     query = st.session_state.qa["history"][-1]["msg"]
     try:
         response = engine.query(query) # Query to ChatGPT
