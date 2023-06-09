@@ -15,8 +15,8 @@ PAGE_LIST = [f"page_{page:03d}" for page in range(1, 38)]
 INTRO = "この文章を３０字程度で要約して下さい。　回答後は、必ず'改行'して「ご質問をどうぞ。」を付けて下さい。"
 
 if "qa" not in st.session_state:
-    st.session_state.qa = {"pdf": "", "history": []}
-#     st.session_state["qa"] = {"pdf": "", "history": [{"role": "Q", "msg": INTRO}]}
+#     st.session_state.qa = {"pdf": "", "history": []}
+    st.session_state["qa"] = {"pdf": "", "history": [{"role": "Q", "msg": INTRO}]}
 
 if "page" not in st.session_state:
     st.session_state.page = "page_001"
@@ -40,6 +40,7 @@ def load_vector_db():
     return index
 
 def store_del_msg():
+    if 
     st.session_state.qa["history"].append({"role": "Q", "msg": st.session_state.user_input}) # store
     st.session_state.user_input = ""  # del
 
@@ -50,9 +51,9 @@ st.sidebar.write("補助金・助成金についてお任せあれ")
 user_input = st.sidebar.text_input("ご質問をどうぞ", key="user_input", on_change=store_del_msg)
 # st.sidebar.markdown("---")
 ## Main Content
-if st.session_state.qa["history"]:
-    for message in st.session_state.qa["history"]:
-#         for message in st.session_state["qa"][1:]:
+if st.session_state.qa["history"][-2] != user_input:
+#     for message in st.session_state.qa["history"]:
+    for message in st.session_state.qa["history"][1:]:
         if message["role"] == "Q": # Q: Question (User)
             st.info(message["msg"])
         elif message["role"] == "A": # A: Answer (AI Assistant)
