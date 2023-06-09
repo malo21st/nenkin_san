@@ -20,7 +20,7 @@ if "qa" not in st.session_state:
     st.session_state["qa"] = {"history": [{"role": "A", "msg": INTRO}]}
 
 if "page" not in st.session_state:
-    st.session_state.page = "page_001"
+    st.session_state.page = ""
 
 # Prompt
 QA_PROMPT_TMPL = (
@@ -85,7 +85,7 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
         st.error(error_msg)
         st.session_state.qa["history"].append({"role": "E", "msg": error_msg})
 
-page = st.sidebar.selectbox("ページ", PAGE_LIST, index=PAGE_LIST.index(st.session_state.page))
+page = st.sidebar.selectbox("ページ", PAGE_LIST, index=PAGE_LIST.index("page_001"))
 st.session_state.page = page
 image = Image.open(f"./pdf_png/{st.session_state.page}.png")
 st.sidebar.image(image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
