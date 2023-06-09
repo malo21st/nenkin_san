@@ -51,7 +51,8 @@ st.sidebar.title("補助金さん")
 st.sidebar.write("補助金・助成金についてお任せあれ")
 user_input = st.sidebar.text_input("ご質問をどうぞ", key="user_input", on_change=store_del_msg)
 st.session_state.page = st.sidebar.selectbox("ページ", PAGE_LIST, index=PAGE_LIST.index(st.session_state.page))
-pdf_img = st.empty() # Streaming message
+image = Image.open(f"./pdf_png/{st.session_state.page}.png")
+st.sidebar.image(image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
 
 # st.sidebar.markdown("---")
 ## Main Content
@@ -86,10 +87,7 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
 #             error_msg = "エラーが発生しました！　もう一度、質問して下さい。"
         st.error(error_msg)
         st.session_state.qa["history"].append({"role": "E", "msg": error_msg})
-        
-image = Image.open(f"./pdf_png/{st.session_state.page}.png")
-pdf_img.sidebar.image(image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
-        
+         
 # st.session_state.qa
 page
 st.session_state.page
