@@ -15,7 +15,7 @@ def show_pdf(file_path):
     pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="800" height="800" type="application/pdf"></iframe>'
     st.markdown(pdf_display, unsafe_allow_html=True)
 
-show_pdf(Path('pdf-pages/R5_tenjikaijyosei_boshuyoko_230403-1.pdf'))
+show_pdf('./pdf-pages/R5_tenjikaijyosei_boshuyoko_230403-1.pdf')
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
