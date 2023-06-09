@@ -92,7 +92,7 @@ with tab_qa:
     st.sidebar.image(image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
 
 with tab_doc:
-    col_l, col_prev, col_next, col_r = st.columns([2, 1, 1, 2])
+    col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
     with col_prev:
         st.button("＜ 前ページ")
     with col_next:
