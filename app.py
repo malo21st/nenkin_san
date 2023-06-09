@@ -6,6 +6,7 @@ from llama_index import QuestionAnswerPrompt, GPTVectorStoreIndex, SimpleDirecto
 from llama_index import StorageContext, load_index_from_storage
 from langchain import OpenAI
 # from tempfile import NamedTemporaryFile
+from PIL import Image
 import os
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
