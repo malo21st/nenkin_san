@@ -8,7 +8,13 @@ from langchain import OpenAI
 from PIL import Image
 import os
 
-st.write(R5_tenjikaijyosei_boshuyoko_230403.pdf)
+def show_pdf(file_path):
+    with open(file_path,"rb") as f:
+        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="800" height="800" type="application/pdf"></iframe>'
+    st.markdown(pdf_display, unsafe_allow_html=True)
+
+show_pdf('R5_tenjikaijyosei_boshuyoko_230403.pdf')
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
