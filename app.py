@@ -47,7 +47,7 @@ def load_vector_db():
 
 @st.cache_data
 def get_pdf_image(page):
-    return Image.open(f"./pdf_png/{PAGE_DIC[{page]}")
+    return Image.open(f"./pdf_png/{PAGE_DIC[page]}")
 
 def store_del_msg():
     if st.session_state.user_input and st.session_state.qa["history"][-1]["role"] != "Q": # st.session_state.prev_q != st.session_state.user_input:
