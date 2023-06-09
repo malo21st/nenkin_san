@@ -44,7 +44,7 @@ def load_vector_db():
     return index
 
 def store_del_msg():
-    if st.session_state.user_input and st.session_state.qa["history"][-1]["role"] != "A": # st.session_state.prev_q != st.session_state.user_input:
+    if st.session_state.user_input and st.session_state.qa["history"][-1]["role"] != "Q": # st.session_state.prev_q != st.session_state.user_input:
         st.session_state.qa["history"].append({"role": "Q", "msg": st.session_state.user_input}) # store
         st.session_state.prev_q = st.session_state.user_input
     st.session_state.user_input = ""  # del
