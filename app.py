@@ -17,7 +17,7 @@ INTRO = "左側のテキストボックスに質問を入力し、エンター�
 
 if "qa" not in st.session_state:
 #     st.session_state.qa = {"pdf": "", "history": []}
-    st.session_state["qa"] = {"pdf": "", "history": [{"role": "Q", "msg": INTRO}]}
+    st.session_state["qa"] = {"pdf": "", "history": [{"role": "A", "msg": INTRO}]}
 
 if "prev_q" not in st.session_state:
     st.session_state.prev_q = ""
