@@ -45,6 +45,10 @@ def load_vector_db():
     index = load_index_from_storage(storage_context, service_context=service_context)
     return index
 
+@st.cache_data
+def get_pdf_image(page):
+    return Image.open(f"./pdf_png/{PAGE_DIC[{page]}")
+
 def store_del_msg():
     if st.session_state.user_input and st.session_state.qa["history"][-1]["role"] != "Q": # st.session_state.prev_q != st.session_state.user_input:
         st.session_state.qa["history"].append({"role": "Q", "msg": st.session_state.user_input}) # store
@@ -92,7 +96,7 @@ with tab_qa:
             st.error(error_msg)
             st.session_state.qa["history"].append({"role": "E", "msg": error_msg})
 
-    image = Image.open(f"./pdf_png/{PAGE_DIC[st.session_state.page]}")
+    image = get_pdf_image(st.session_state.page)
     st.sidebar.image(image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
 
 with tab_doc:
@@ -113,7 +117,7 @@ with tab_doc:
         pass
     with col_r:
         pass
-    pdf_img = Image.open(f"./pdf_png/{PAGE_DIC[st.session_state.pdf_page]}")
+    pdf_img = get_pdf_image(st.session_state.pdf_page)
     st.image(pdf_img, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
     
 # st.session_state.qa
