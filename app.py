@@ -7,6 +7,7 @@ from llama_index import StorageContext, load_index_from_storage
 from langchain import OpenAI
 from PIL import Image
 import os
+import base64
 
 def show_pdf(file_path):
     with open(file_path,"rb") as f:
