@@ -69,7 +69,7 @@ chat_box = st.empty() # Streaming message
 # Model (Business Logic)
 index = load_vector_db()
 engine = index.as_query_engine(text_qa_template=QA_PROMPT, streaming=True, similarity_top_k=1)
-if st.session_state.prev_q != user_input:
+if user_input and st.session_state.prev_q != user_input:
     query = st.session_state.qa["history"][-1]["msg"]
     try:
         response = engine.query(query) # Query to ChatGPT
