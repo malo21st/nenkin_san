@@ -83,7 +83,6 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
         refer_pages = "\n\n参照：" + ", ".join([f"{node.extra_info['page_label']}ページ" for node in response.source_nodes])
         chat_box.write(text + refer_pages)
         st.session_state.qa["history"].append({"role": "A", "msg": text + refer_pages})
-        st.session_state.page = int(response.source_nodes[0].extra_info['page_label'])
         st.session_state.pdf_page = int(response.source_nodes[0].extra_info['page_label'])
     except Exception as error_msg:
 #             error_msg = "エラーが発生しました！　もう一度、質問して下さい。"
@@ -115,4 +114,4 @@ with st.expander("参照する"):
     st.image(pdf_img, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
     
 # st.session_state.qa
-st.session_state.page
+# st.session_state.pdf_page
