@@ -94,3 +94,4 @@ st.sidebar.image(image, caption = '展示会出展助成事業（令和５年度
 st.session_state.qa
 st.session_state.prev_q
 st.session_state.user_input
+st.session_state.page
