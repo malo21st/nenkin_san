@@ -45,9 +45,7 @@ def get_pdf_image(page):
     return Image.open(f"./pdf_png/{PAGE_DIC[page]}")
 
 def show_pdf(page):
-    pdf_image = get_pdf_image(page)
     st.session_state.pdf_page = page
-    return pdf_image
 
 def store_del_msg():
     if st.session_state.user_input and st.session_state.qa["history"][-1]["role"] != "Q": # st.session_state.prev_q != st.session_state.user_input:
@@ -98,20 +96,21 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
 
 with st.container():
     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
-    page = st.session_state.pdf_page    
+    page = st.session_state.pdf_page 
     with col_prev:
         if page == 0:
-            pdf_img = st.button("＜ 前ページ", on_click=show_pdf, args=([page]), disabled=True)
+            st.button("＜ 前ページ", on_click=show_pdf, args=([page]), disabled=True)
         elif page > 0:
-            pdf_img = st.button("＜ 前ページ", on_click=show_pdf, args=([page-1]))
+            st.button("＜ 前ページ", on_click=show_pdf, args=([page-1]))
     with col_next:
         if page == 37:
-            pdf_img = st.button("次ページ ＞", on_click=show_pdf, args=([page]), disabled=True)
+            st.button("次ページ ＞", on_click=show_pdf, args=([page]), disabled=True)
         elif page < 37:
-            pdf_img = st.button("次ページ ＞", on_click=show_pdf, args=([page+1]))
+            st.button("次ページ ＞", on_click=show_pdf, args=([page+1]))
     with col_l: pass
     with col_r: pass
-    st.image(pdf_img, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
+    pdf_image = get_pdf_image(st.session_state.pdf_page)
+    st.image(pdf_image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
 
 # st.session_state.qa
 # st.session_state.pdf_page
