@@ -11,7 +11,7 @@ import os
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
-PAGE_DIC = {page: f"page_{page:03d}.png" for page in range(1, 38)}
+PAGE_DIC = {page: f"page_{page:03d}.png" for page in range(0, 37)}
 INTRO = "左側のテキストボックスに質問を入力し、エンターキーを押すとＡＩが回答します。"
 # INTRO = "この文章を３０字程度で要約して下さい。　回答後は、必ず'改行'して「ご質問をどうぞ。」を付けて下さい。"
 
@@ -20,7 +20,7 @@ if "qa" not in st.session_state:
     st.session_state["qa"] = {"history": [{"role": "A", "msg": INTRO}]}
 
 if "pdf_page" not in st.session_state:
-    st.session_state.pdf_page = 1
+    st.session_state.pdf_page = 0
 
 # Prompt
 QA_PROMPT_TMPL = (
@@ -92,10 +92,10 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
 st.sidebar.markdown("---")
 st.sidebar.image(get_pdf_image(1), caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
 
-with st.expander("参照する"):
+with st.container():
     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
     with col_prev:
-        if st.button and st.session_state.pdf_page == 1:
+        if st.button and st.session_state.pdf_page == 0:
             st.button("＜ 前ページ", disabled=True)
         else:
             if st.button("＜ 前ページ"):
