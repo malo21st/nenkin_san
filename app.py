@@ -17,7 +17,7 @@ INTRO = "左側のテキストボックスに質問を入力し、エンター�
 
 if "qa" not in st.session_state:
 #     st.session_state.qa = {"pdf": "", "history": []}
-    st.session_state["qa"] = {"pdf": "", "history": [{"role": "A", "msg": INTRO}]}
+    st.session_state["qa"] = {"history": [{"role": "A", "msg": INTRO}]}
 
 if "prev_q" not in st.session_state:
     st.session_state.prev_q = ""
@@ -73,7 +73,7 @@ chat_box = st.empty() # Streaming message
 index = load_vector_db()
 engine = index.as_query_engine(text_qa_template=QA_PROMPT, streaming=True, similarity_top_k=1)
 
-if st.session_state.user_input and st.session_state.qa["history"][-1]["role"] == "Q":
+if st.session_state.qa["history"][-1]["role"] == "Q":
     query = st.session_state.qa["history"][-1]["msg"]
     try:
         response = engine.query(query) # Query to ChatGPT
