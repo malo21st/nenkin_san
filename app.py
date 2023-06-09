@@ -19,9 +19,6 @@ if "qa" not in st.session_state:
 #     st.session_state.qa = {"pdf": "", "history": []}
     st.session_state["qa"] = {"history": [{"role": "A", "msg": INTRO}]}
 
-if "prev_q" not in st.session_state:
-    st.session_state.prev_q = ""
-
 if "page" not in st.session_state:
     st.session_state.page = "page_001"
 
@@ -46,7 +43,6 @@ def load_vector_db():
 def store_del_msg():
     if st.session_state.user_input and st.session_state.qa["history"][-1]["role"] != "Q": # st.session_state.prev_q != st.session_state.user_input:
         st.session_state.qa["history"].append({"role": "Q", "msg": st.session_state.user_input}) # store
-        st.session_state.prev_q = st.session_state.user_input
     st.session_state.user_input = ""  # del
 
 # View (User Interface)
@@ -54,7 +50,8 @@ def store_del_msg():
 st.sidebar.title("補助金さん")
 st.sidebar.write("補助金・助成金についてお任せあれ")
 user_input = st.sidebar.text_input("ご質問をどうぞ", key="user_input", on_change=store_del_msg)
-st.session_state.page = st.sidebar.selectbox("ページ", PAGE_LIST, index=PAGE_LIST.index(st.session_state.page))
+page = st.sidebar.selectbox("ページ", PAGE_LIST, index=PAGE_LIST.index(st.session_state.page))
+st.session_state.page = page
 
 # st.sidebar.markdown("---")
 ## Main Content
@@ -94,6 +91,4 @@ image = Image.open(f"./pdf_png/{st.session_state.page}.png")
 st.sidebar.image(image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
         
 st.session_state.qa
-st.session_state.prev_q
-st.session_state.user_input
 st.session_state.page
