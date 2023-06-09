@@ -19,9 +19,6 @@ if "qa" not in st.session_state:
 #     st.session_state.qa = {"pdf": "", "history": []}
     st.session_state["qa"] = {"history": [{"role": "A", "msg": INTRO}]}
 
-if "page" not in st.session_state:
-    st.session_state.page = 1
-
 if "pdf_page" not in st.session_state:
     st.session_state.pdf_page = 1
 
@@ -93,8 +90,8 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
         st.error(error_msg)
         st.session_state.qa["history"].append({"role": "E", "msg": error_msg})
 
-image = get_pdf_image(st.session_state.page)
-st.sidebar.image(image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
+st.sidebar.markdown("---")
+st.sidebar.image(get_pdf_image(1), caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
 
 with st.expander("参照する"):
     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
