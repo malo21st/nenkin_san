@@ -94,13 +94,17 @@ with tab_qa:
 with tab_doc:
     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
     with col_prev:
-        st.button("＜ 前ページ")
-        if st.button and st.session_state.page > 2:
-            st.session_state.page -= st.session_state.page
+        if st.button and st.session_state.page == 1:
+            st.button("＜ 前ページ", disable=True)
+        else:
+            if st.button("＜ 前ページ"):
+                st.session_state.page -= st.session_state.page
     with col_next:
-        st.button("次ページ ＞")
-        if st.button and st.session_state.page < 37:
-            st.session_state.page += st.session_state.page
+        if st.button and st.session_state.page == 37:
+            st.button("次ページ ＞", disable=True)
+        else:
+            if st.button("次ページ ＞"):
+                st.session_state.page += st.session_state.page
     with col_l:
         pass
     with col_r:
