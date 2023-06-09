@@ -1,6 +1,6 @@
 import streamlit as st
 # from llama_index import download_loader
-# from pathlib import Path
+from pathlib import Path
 from llama_index import LLMPredictor, GPTVectorStoreIndex, PromptHelper, ServiceContext
 from llama_index import QuestionAnswerPrompt, GPTVectorStoreIndex, SimpleDirectoryReader
 from llama_index import StorageContext, load_index_from_storage
@@ -13,6 +13,7 @@ from streamlit_javascript import st_javascript
 
 url = st_javascript("await fetch('').then(r => window.parent.location.href)")
 st.write(url[:-4])
+st.write(Path("R5_tenjikaijyosei_boshuyoko_230403.pdf"))
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
