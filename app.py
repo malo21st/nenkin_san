@@ -11,7 +11,7 @@ import os
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
-PAGE_DIC = {page: f"page_{page + 1: 03d}.png" for page in range(0, 37)}
+PAGE_DIC = {page: f"page_{page+1:03d}.png" for page in range(0, 37)}
 INTRO = "左側のテキストボックスに質問を入力し、エンターキーを押すとＡＩが回答します。"
 # INTRO = "この文章を３０字程度で要約して下さい。　回答後は、必ず'改行'して「ご質問をどうぞ。」を付けて下さい。"
 
