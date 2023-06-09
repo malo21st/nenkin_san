@@ -12,7 +12,7 @@ import base64
 from pathlib import Path
 import streamlit.components.v1 as components
 
-pdf_path = Path("R5_tenjikaijyosei_boshuyoko_230403.pdf")
+pdf_path = Path("R5_tenjikaijyosei_boshuyoko_230403.pdf", height=800)
 base64_pdf = base64.b64encode(pdf_path.read_bytes()).decode("utf-8")
 pdf_display = f"""
     <iframe src="data:application/pdf;base64,{base64_pdf}" width="800px" height="2100px" type="application/pdf"></iframe>
