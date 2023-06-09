@@ -12,7 +12,7 @@ import streamlit.components.v1 as components
 from streamlit_javascript import st_javascript
 
 url = st_javascript("await fetch('').then(r => window.parent.location.href)")
-st.write(url[:-5])
+st.write(url[:-4])
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
