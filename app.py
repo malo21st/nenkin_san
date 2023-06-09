@@ -42,7 +42,8 @@ QA_PROMPT = QuestionAnswerPrompt(QA_PROMPT_TMPL)
 
 @st.cache_resource
 def load_vector_db():
-    llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-3.5-turbo", streaming=True))
+#     llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-3.5-turbo", streaming=True))
+    llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-4", streaming=True))
     service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor)
     storage_context = StorageContext.from_defaults(persist_dir="./storage/")
     index = load_index_from_storage(storage_context, service_context=service_context)
