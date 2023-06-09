@@ -1,6 +1,6 @@
 import streamlit as st
 # from llama_index import download_loader
-# from pathlib import Path
+from pathlib import Path
 from llama_index import LLMPredictor, GPTVectorStoreIndex, PromptHelper, ServiceContext
 from llama_index import QuestionAnswerPrompt, GPTVectorStoreIndex, SimpleDirectoryReader
 from llama_index import StorageContext, load_index_from_storage
@@ -15,7 +15,7 @@ def show_pdf(file_path):
     pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="800" height="800" type="application/pdf"></iframe>'
     st.markdown(pdf_display, unsafe_allow_html=True)
 
-show_pdf('R5_tenjikaijyosei_boshuyoko_230403.pdf')
+show_pdf(Path('R5_tenjikaijyosei_boshuyoko_230403.pdf'))
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
