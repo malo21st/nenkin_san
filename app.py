@@ -65,7 +65,9 @@ def store_del_msg():
 st.sidebar.title("補助金さん")
 st.sidebar.write("補助金・助成金についてお任せあれ")
 user_input = st.sidebar.text_input("ご質問をどうぞ", key="user_input", on_change=store_del_msg)
-# st.sidebar.markdown("---")
+st.sidebar.markdown("---")
+if st.sidebar.button("この補助金・助成金の概要"):
+    user_input = "この助成金の概要を教えて下さい。"
 st.sidebar.image(get_pdf_image(1), caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
 
 # st.sidebar.markdown("---")
