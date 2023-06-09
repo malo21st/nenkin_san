@@ -100,6 +100,8 @@ with st.container():
         else:
             if st.button("＜ 前ページ"):
                 page -= 1
+                if page == 0:
+                    st.button("＜ 前ページ", disabled=True)
     with col_next:
         if page == 37:
             st.button("次ページ ＞", disabled=True)
