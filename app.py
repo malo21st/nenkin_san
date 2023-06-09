@@ -8,7 +8,7 @@ from langchain import OpenAI
 from PIL import Image
 import os
 
-st.write("R5_tenjikaijyosei_boshuyoko_230403.pdf")
+st.write(R5_tenjikaijyosei_boshuyoko_230403.pdf)
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
