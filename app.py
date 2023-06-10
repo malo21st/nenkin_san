@@ -102,7 +102,7 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
             text += next
             chat_box.write(text)
         page_int = int(response.source_nodes[0].extra_info['page_label'])
-        refer_pages = f"\n\n参照：{page_int - 1}ページ\n\n"
+        refer_pages = f"\n\n参照：{page_int - 1} ページ\n\n\n"
 #         refer_pages = "\n\n参照：" + ", ".join([f"{node..extra_info['page_label']}ページ" for node in response.source_nodes])
         chat_box.write(text + refer_pages)
         st.session_state.qa["history"].append({"role": "A", "msg": text + refer_pages})
