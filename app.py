@@ -113,7 +113,7 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
         st.session_state.qa["history"].append({"role": "E", "msg": error_msg})
 
     with pdf_page:
-        with st.expander(f"{page_int - 1}ページを開く"):
+        with st.expander(f"{page_int - 1} ページを開く"):
             page = st.session_state.pdf_page
         #     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
         #     with col_prev:
