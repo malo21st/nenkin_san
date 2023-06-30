@@ -101,7 +101,7 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
         for next in response.response_gen:
             text += next
             chat_box.write(text)
-        page_int = int(response.source_nodes[0].extra_info['page_label'])
+        page_int = int(response.source_nodes[0].node.extra_info['page_label'])
         refer_pages = f"\n\n参照：{page_int - 1} ページ\n\n\n"
 #         refer_pages = "\n\n参照：" + ", ".join([f"{node..extra_info['page_label']}ページ" for node in response.source_nodes])
         chat_box.write(text + refer_pages)
