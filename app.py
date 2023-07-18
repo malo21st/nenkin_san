@@ -4,9 +4,9 @@ from pathlib import Path
 from llama_index import LLMPredictor, GPTVectorStoreIndex, PromptHelper, ServiceContext
 from llama_index import QuestionAnswerPrompt, GPTVectorStoreIndex, SimpleDirectoryReader
 from llama_index import StorageContext, load_index_from_storage
-from langchain import ChatOpenAI
+# from langchain import ChatOpenAI
 # from langchain import OpenAI
-# from langchain.chat_models import ChatOpenAI
+from langchain.chat_models import ChatOpenAI
 from PIL import Image
 import os
 # import base64
