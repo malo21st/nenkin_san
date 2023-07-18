@@ -105,34 +105,19 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
             chat_box.write(text)
         page_int = int(response.source_nodes[0].node.extra_info['page_label'])
         refer_pages = f"\n\n参照：{page_int - 1} ページ\n\n\n"
-#         refer_pages = "\n\n参照：" + ", ".join([f"{node..extra_info['page_label']}ページ" for node in response.source_nodes])
+        # refer_pages = "\n\n参照：" + ", ".join([f"{node..extra_info['page_label']}ページ" for node in response.source_nodes])
         chat_box.write(text + refer_pages)
         st.session_state.qa["history"].append({"role": "A", "msg": text + refer_pages})
         st.session_state.pdf_page = page_int
+        with pdf_page:
+            with st.expander(f"{page_int - 1} ページを開く"):
+                page = st.session_state.pdf_page
+                pdf_image = get_pdf_image(st.session_state.pdf_page)
+                st.image(pdf_image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
     except Exception as error_msg:
 #             error_msg = "エラーが発生しました！　もう一度、質問して下さい。"
         st.error(error_msg)
         st.session_state.qa["history"].append({"role": "E", "msg": error_msg})
-
-    with pdf_page:
-        with st.expander(f"{page_int - 1} ページを開く"):
-            page = st.session_state.pdf_page
-        #     col_l, col_prev, col_next, col_r = st.columns([1.5, 1, 1, 1.5])
-        #     with col_prev:
-        #         if page == 1:
-        #             st.button("＜ 前ページ", on_click=show_pdf, args=([page]), disabled=True)
-        #         elif page > 1:
-        #             st.button("＜ 前ページ", on_click=show_pdf, args=([page-1]))
-        #     with col_next:
-        #         if page == 37:
-        #             st.button("次ページ ＞", on_click=show_pdf, args=([page]), disabled=True)
-        #         elif page < 37:
-        #             st.button("次ページ ＞", on_click=show_pdf, args=([page+1]))
-        #     with col_l: pass
-        #     with col_r: pass
-            pdf_image = get_pdf_image(st.session_state.pdf_page)
-#             st.write(page, st.session_state.pdf_page )
-            st.image(pdf_image, caption = '展示会出展助成事業（令和５年度　東京都）', use_column_width = "auto")
-
+        
 # st.session_state.qa
 # st.session_state.pdf_page
