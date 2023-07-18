@@ -1,2 +1,2 @@
-llama_index = 0.7.0
+llama_index == 0.7.0
 streamlit-javascript
