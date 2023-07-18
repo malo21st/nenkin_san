@@ -5,8 +5,8 @@ from llama_index import LLMPredictor, GPTVectorStoreIndex, PromptHelper, Service
 from llama_index import QuestionAnswerPrompt, GPTVectorStoreIndex, SimpleDirectoryReader
 from llama_index import StorageContext, load_index_from_storage
 # from langchain import ChatOpenAI
-# from langchain import OpenAI
-from langchain.chat_models import ChatOpenAI
+from langchain import OpenAI
+# from langchain.chat_models import ChatOpenAI
 from PIL import Image
 import os
 # import base64
@@ -44,7 +44,7 @@ QA_PROMPT = QuestionAnswerPrompt(QA_PROMPT_TMPL)
 
 @st.cache_resource
 def load_vector_db():
-    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo", streaming=True))
+    llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-3.5-turbo", streaming=True))
     # llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-4", streaming=True))
     service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor)
     storage_context = StorageContext.from_defaults(persist_dir="./storage/")
