@@ -1,2 +1,2 @@
-llama_index == 0.6.18
+llama_index == 0.6.15
 streamlit-javascript
