@@ -1,3 +1,5 @@
 llama_index == 0.6.30
 langchain  == 0.0.234
 streamlit-javascript
+PyMuPDF
+nltk
