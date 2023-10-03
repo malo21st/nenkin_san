@@ -10,18 +10,10 @@ from langchain import OpenAI
 from PIL import Image
 import fitz  # PyMuPDF
 import os
-# import base64
 
 type_to_index = {"展示会出展助成事業":0, "BX2000":1, "MX1000/3000":2}
 type_to_path = {"展示会出展助成事業":"./storage/", "BX2000":"./BX2000_DB/", "MX1000/3000":"./MX1000_DB/"}
 docu_to_pdf_path = {"展示会出展助成事業":"./PDF/R5_tenjikaijyosei_boshuyoko_230403.pdf", "BX2000":"./PDF/BX2000_m.pdf", "MX1000/3000":"./PDF/MX1000_3000_m.pdf"}
-# def show_pdf(file_path):
-#     with open(file_path,"rb") as f:
-#         base64_pdf = base64.b64encode(f.read()).decode()
-#     pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="600" height="800" type="application/pdf"></iframe>'
-#     st.markdown(pdf_display, unsafe_allow_html=True)
-
-# show_pdf('./pdf-pages/R5_tenjikaijyosei_boshuyoko_230403-1.pdf')
 
 os.environ["OPENAI_API_KEY"] = st.secrets.openai_api_key
 
@@ -67,10 +59,6 @@ def get_pdf_image(docu_type, page):
     image = page_data.get_pixmap()
     image_data = image.tobytes("png")
     return image_data
-    # return Image.open(f"./pdf_png/{PAGE_DIC[page]}")
-
-def show_pdf(page):
-    st.session_state.pdf_page = page
 
 def store_del_msg():
     if st.session_state.user_input and st.session_state.qa["history"][-1]["role"] != "Q": # st.session_state.prev_q != st.session_state.user_input:
@@ -93,7 +81,7 @@ if docu_type == "展示会出展助成事業":
         st.session_state.qa["history"].append({"role": "Q", "msg": "助成対象の経費を教えて下さい。"})
     if st.sidebar.button("申請手順（表形式）"):
         st.session_state.qa["history"].append({"role": "Q", "msg": "申請手順を表にして下さい。"})
-    st.sidebar.image(get_pdf_image(docu_type, 0), caption = '展示会出展助成事業', use_column_width = "auto")
+st.sidebar.image(get_pdf_image(docu_type, 0), caption = '展示会出展助成事業', use_column_width = "auto")
 
 # st.sidebar.markdown("---")
 ## Main Content
@@ -111,7 +99,7 @@ pdf_page = st.container()
 
 # Model (Business Logic)
 index = load_vector_db(docu_type)
-engine = index.as_query_engine(text_qa_template=QA_PROMPT, streaming=True, similarity_top_k=1)
+engine = index.as_query_engine(text_qa_template=QA_PROMPT, streaming=True, similarity_top_k=3)
 
 if st.session_state.qa["history"][-1]["role"] == "Q":
     query = st.session_state.qa["history"][-1]["msg"]
@@ -121,17 +109,19 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
         for next in response.response_gen:
             text += next
             chat_box.write(text)
-        page_int = int(response.source_nodes[0].node.extra_info['page_label'])
-        refer_pages = f"\n\n参照：{page_int} ページ\n\n\n"
-        # refer_pages = "\n\n参照：" + ", ".join([f"{node..extra_info['page_label']}ページ" for node in response.source_nodes])
+        # page_int = int(response.source_nodes[0].node.extra_info['page_label'])
+        # refer_pages = f"\n\n参照：{page_int} ページ\n\n\n"
+        page_lst = [int(node..extra_info['page_label']) for node in response.source_nodes]
+        refer_pages = "\n\n参照：" + ", ".join([f"{page}ページ" for page in page_lst])
         chat_box.write(text + refer_pages)
         st.session_state.qa["history"].append({"role": "A", "msg": text + refer_pages})
-        st.session_state.pdf_page = page_int
+        st.session_state.pdf_page = page_lst
         with pdf_page:
-            with st.expander(f"{page_int} ページを開く"):
-                page = st.session_state.pdf_page
-                pdf_image = get_pdf_image(docu_type, st.session_state.pdf_page)
-                st.image(pdf_image, caption = f'{docu_type} {st.session_state.pdf_page}ページ', use_column_width = "auto")
+            for page in page_lst:
+                with st.expander(f"{page} ページを開く"):
+                    page = st.session_state.pdf_page
+                    pdf_image = get_pdf_image(docu_type, page)
+                    st.image(pdf_image, caption = f'{docu_type} {page}ページ', use_column_width = "auto")
     except Exception as error_msg:
 #             error_msg = "エラーが発生しました！　もう一度、質問して下さい。"
         st.error(f"ERROR: {error_msg}")
