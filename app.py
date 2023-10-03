@@ -26,7 +26,7 @@ if "qa" not in st.session_state:
     st.session_state["qa"] = {"history": [{"role": "A", "msg": INTRO}]}
 
 if "pdf_page" not in st.session_state:
-    st.session_state.pdf_page = [0]
+    st.session_state.pdf_page = list()
 
 if "docu_index" not in st.session_state:
     st.session_state.docu_index = 0
@@ -116,7 +116,7 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
         chat_box.write(text + refer_pages)
         st.session_state.qa["history"].append({"role": "A", "msg": text + refer_pages})
         st.session_state.pdf_page = page_lst
-        with pdf_page:
+        with st.session_state.pdf_page:
             for page in page_lst:
                 with st.expander(f"{page} ページを開く"):
                     page = st.session_state.pdf_page
