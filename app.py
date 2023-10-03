@@ -74,7 +74,7 @@ def store_del_msg():
 st.sidebar.title("Documenter")
 st.sidebar.write("あなたの文書からお答えします")
 docu_index = st.session_state.docu_index
-docu_type = st.sidebar.text_input("文書を選んでください", ["展示会出展助成事業", "BX2000", "MX1000/3000"], index=docu_index)
+docu_type = st.sidebar.selectbox("文書を選んでください", ["展示会出展助成事業", "BX2000", "MX1000/3000"], index=docu_index)
 st.session_state.docu_index = type_to_index[docu_type]
 user_input = st.sidebar.text_input("ご質問をどうぞ", key="user_input", on_change=store_del_msg)
 # st.sidebar.markdown("---")
