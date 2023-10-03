@@ -111,8 +111,8 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
             chat_box.write(text)
         # page_int = int(response.source_nodes[0].node.extra_info['page_label'])
         # refer_pages = f"\n\n参照：{page_int} ページ\n\n\n"
-        page_lst = [int(node.extra_info['page_label']) for node in response.source_nodes]
-        refer_pages = "\n\n参照：" + ", ".join([f"{page}ページ" for page in page_lst])
+        page_lst = [node.extra_info['page_label'] for node in response.source_nodes]
+        refer_pages = "\n\n参照：" + "，".join([f"{page}ページ" for page in page_lst])
         chat_box.write(text + refer_pages)
         st.session_state.qa["history"].append({"role": "A", "msg": text + refer_pages})
         st.session_state.pdf_page = page_lst
