@@ -14,7 +14,7 @@ import os
 
 type_to_index = {"展示会出展助成事業":0, "BX2000":1, "MX1000/3000":2}
 type_to_path = {"展示会出展助成事業":"./storage/", "BX2000":"./BX2000_DB/", "MX1000/3000":"./MX1000_DB/"}
-docu_to_pdf_path = {"展示会出展助成事業":"PDF/R5_tenjikaijyosei_boshuyoko_230403.pdf", "BX2000":"PDF/BX2000_m.pdf", "MX1000/3000":"PDF/MX1000_3000_m.pdf"}
+docu_to_pdf_path = {"展示会出展助成事業":"./PDF/R5_tenjikaijyosei_boshuyoko_230403.pdf", "BX2000":"./PDF/BX2000_m.pdf", "MX1000/3000":"./PDF/MX1000_3000_m.pdf"}
 # def show_pdf(file_path):
 #     with open(file_path,"rb") as f:
 #         base64_pdf = base64.b64encode(f.read()).decode()
@@ -130,7 +130,7 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
         with pdf_page:
             with st.expander(f"{page_int} ページを開く"):
                 page = st.session_state.pdf_page
-                pdf_image = get_pdf_image(st.session_state.docu_index, st.session_state.pdf_page)
+                pdf_image = get_pdf_image(docu_type, st.session_state.pdf_page)
                 st.image(pdf_image, caption = f'{docu_type} {st.session_state.pdf_page}ページ', use_column_width = "auto")
     except Exception as error_msg:
 #             error_msg = "エラーが発生しました！　もう一度、質問して下さい。"
