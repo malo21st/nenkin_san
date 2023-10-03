@@ -11,6 +11,8 @@ from PIL import Image
 import os
 # import base64
 
+type_to_index = {"展示会出展助成事業":0, "BX2000":1, "MX1000/3000":2}
+type_to_path = {"展示会出展助成事業":"./storage/", "BX2000":"./BX2000_DB/", "MX1000/3000":"./MX1000_DB/"}
 # def show_pdf(file_path):
 #     with open(file_path,"rb") as f:
 #         base64_pdf = base64.b64encode(f.read()).decode()
@@ -32,6 +34,9 @@ if "qa" not in st.session_state:
 if "pdf_page" not in st.session_state:
     st.session_state.pdf_page = 1
 
+if "docu_index" not in st.session_state:
+    st.session_state.docu_index = 0
+
 # Prompt
 QA_PROMPT_TMPL = (
     "下記の情報が与えられています。 \n"
@@ -43,11 +48,12 @@ QA_PROMPT_TMPL = (
 QA_PROMPT = QuestionAnswerPrompt(QA_PROMPT_TMPL)
 
 @st.cache_resource
-def load_vector_db():
+def load_vector_db(docu_type):
+    db_path = type_to_path[docu_type]
     llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-3.5-turbo", streaming=True))
     # llm_predictor = LLMPredictor(llm=OpenAI(temperature=0, model_name="gpt-4", streaming=True))
     service_context = ServiceContext.from_defaults(llm_predictor=llm_predictor)
-    storage_context = StorageContext.from_defaults(persist_dir="./storage/")
+    storage_context = StorageContext.from_defaults(persist_dir=db_path)
     index = load_index_from_storage(storage_context, service_context=service_context)
     return index
 
@@ -65,17 +71,21 @@ def store_del_msg():
 
 # View (User Interface)
 ## Sidebar
-st.sidebar.title("補助金さん")
-st.sidebar.write("補助金・助成金についてお任せあれ")
+st.sidebar.title("Documenter")
+st.sidebar.write("あなたの文書からお答えします")
+docu_index = st.session_state.docu_index
+docu_type = st.sidebar.text_input("文書を選んでください", ["展示会出展助成事業", "BX2000", "MX1000/3000"], index=docu_index)
+st.session_state.docu_index = type_to_index[docu_type]
 user_input = st.sidebar.text_input("ご質問をどうぞ", key="user_input", on_change=store_del_msg)
 # st.sidebar.markdown("---")
-if st.sidebar.button("助成事業の目的"):
-    st.session_state.qa["history"].append({"role": "Q", "msg": "助成事業の目的を教えて下さい。"})
-if st.sidebar.button("助成対象の経費"):
-    st.session_state.qa["history"].append({"role": "Q", "msg": "助成対象の経費を教えて下さい。"})
-if st.sidebar.button("申請手順（表形式）"):
-    st.session_state.qa["history"].append({"role": "Q", "msg": "申請手順を表にして下さい。"})
-st.sidebar.image(get_pdf_image(1), caption = '展示会出展助成事業', use_column_width = "auto")
+if docu_type == "展示会出展助成事業":
+    if st.sidebar.button("助成事業の目的"):
+        st.session_state.qa["history"].append({"role": "Q", "msg": "助成事業の目的を教えて下さい。"})
+    if st.sidebar.button("助成対象の経費"):
+        st.session_state.qa["history"].append({"role": "Q", "msg": "助成対象の経費を教えて下さい。"})
+    if st.sidebar.button("申請手順（表形式）"):
+        st.session_state.qa["history"].append({"role": "Q", "msg": "申請手順を表にして下さい。"})
+    st.sidebar.image(get_pdf_image(1), caption = '展示会出展助成事業', use_column_width = "auto")
 
 # st.sidebar.markdown("---")
 ## Main Content
@@ -92,7 +102,7 @@ chat_box = st.empty() # Streaming message
 pdf_page = st.container()
 
 # Model (Business Logic)
-index = load_vector_db()
+index = load_vector_db(docu_type)
 engine = index.as_query_engine(text_qa_template=QA_PROMPT, streaming=True, similarity_top_k=1)
 
 if st.session_state.qa["history"][-1]["role"] == "Q":
