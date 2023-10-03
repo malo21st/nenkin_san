@@ -116,10 +116,10 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
         chat_box.write(text + refer_pages)
         st.session_state.qa["history"].append({"role": "A", "msg": text + refer_pages})
         st.session_state.pdf_page = page_lst
-        with st.session_state.pdf_page:
+        with pdf_page:
             for page in page_lst:
                 with st.expander(f"{page} ページを開く"):
-                    page = st.session_state.pdf_page
+                    # page = st.session_state.pdf_page
                     pdf_image = get_pdf_image(docu_type, page)
                     st.image(pdf_image, caption = f'{docu_type} {page}ページ', use_column_width = "auto")
     except Exception as error_msg:
