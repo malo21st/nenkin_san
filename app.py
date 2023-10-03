@@ -61,7 +61,7 @@ def load_vector_db(docu_type):
 
 @st.cache_data
 def get_pdf_image(docu_type, page):
-    pdf_path = docu_to_pdf_path(docu_type)
+    pdf_path = docu_to_pdf_path[docu_type]
     pdf_document = fitz.open(pdf_path)
     page_data = pdf_document.load_page(int(page))
     image = page_data.get_pixmap()
