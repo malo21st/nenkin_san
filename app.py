@@ -63,7 +63,7 @@ def load_vector_db(docu_type):
 def get_pdf_image(docu_type, page):
     pdf_path = docu_to_pdf_path(cocu_type)
     pdf_document = fitz.open(pdf_path)
-    page_data = pdf_document.load_page(page)
+    page_data = pdf_document.load_page(int(page))
     image = page_data.get_pixmap()
     image_data = image.tobytes("png")
     return image_data
@@ -93,7 +93,7 @@ if docu_type == "展示会出展助成事業":
         st.session_state.qa["history"].append({"role": "Q", "msg": "助成対象の経費を教えて下さい。"})
     if st.sidebar.button("申請手順（表形式）"):
         st.session_state.qa["history"].append({"role": "Q", "msg": "申請手順を表にして下さい。"})
-    st.sidebar.image(get_pdf_image(1), caption = '展示会出展助成事業', use_column_width = "auto")
+    st.sidebar.image(get_pdf_image(docu_type, 1), caption = '展示会出展助成事業', use_column_width = "auto")
 
 # st.sidebar.markdown("---")
 ## Main Content
