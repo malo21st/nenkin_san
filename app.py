@@ -93,7 +93,7 @@ if docu_type == "展示会出展助成事業":
         st.session_state.qa["history"].append({"role": "Q", "msg": "助成対象の経費を教えて下さい。"})
     if st.sidebar.button("申請手順（表形式）"):
         st.session_state.qa["history"].append({"role": "Q", "msg": "申請手順を表にして下さい。"})
-    st.sidebar.image(get_pdf_image(docu_type, 1), caption = '展示会出展助成事業', use_column_width = "auto")
+    st.sidebar.image(get_pdf_image(docu_type, 0), caption = '展示会出展助成事業', use_column_width = "auto")
 
 # st.sidebar.markdown("---")
 ## Main Content
@@ -128,7 +128,7 @@ if st.session_state.qa["history"][-1]["role"] == "Q":
         st.session_state.qa["history"].append({"role": "A", "msg": text + refer_pages})
         st.session_state.pdf_page = page_int
         with pdf_page:
-            with st.expander(f"{page_int - 1} ページを開く"):
+            with st.expander(f"{page_int} ページを開く"):
                 page = st.session_state.pdf_page
                 pdf_image = get_pdf_image(st.session_state.docu_index, st.session_state.pdf_page)
                 st.image(pdf_image, caption = f'{docu_type} {st.session_state.pdf_page}ページ', use_column_width = "auto")
